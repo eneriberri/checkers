@@ -38,15 +38,32 @@ class Board
   end
 
   def display
-    print " "; 8.times { |num| print "  #{num} ".colorize(:magenta)}; puts ""
+    print " "; 8.times { |num| print "  #{num}".colorize(:magenta)}; puts ""
     board.each_with_index do |row, index|
       print "#{index} ".colorize(:magenta)
+      col = 0
       row.each do |piece|
-        print piece.is_a?(Piece) ? piece.to_s + " " : " __ ".colorize(:blue)
+        color = (index.even? && col.odd?) || (index.odd? && col.even?) ? :black : :cyan
+        print piece.is_a?(Piece) ? " #{piece.to_s.colorize(:background => color)} " : "   ".colorize(:background => color)
+        col += 1
       end
       puts ""
     end
     puts "\n---------------------------------"
+  end
+
+  def dup
+    dup_board = Board.new
+    pieces.each { |piece| Piece.new(dup_board, piece.color, piece.pos) }
+    dup_board
+  end
+
+  def pieces
+    board.flatten.select { |el| el.is_a?(Piece) }
+  end
+
+  def add_piece(piece, pos)
+    self[pos] = piece
   end
 
   def [](pos)
@@ -64,6 +81,8 @@ class Board
   end
 
   def opponent?(pos, color)
+    return false unless valid_pos?(pos)
+
     self[pos].is_a?(Piece) && self[pos].color != color
   end
 
@@ -78,18 +97,38 @@ p = Piece.new(b, :red, [2,1])
 p.perform_slide([3,2])
 b.display
 
-p2 = Piece.new(b, :white, [5,4])
-p2.perform_slide([4,3])
+whi1 = Piece.new(b, :white, [5,4])
+whi1.perform_slide([4,3])
 b.display
 
 p3 = b[[2,5]]
 puts "red p3 pos: #{p3.pos}, slide moves: #{p3.slide_moves}, jump moves: #{p3.jump_moves}"
 p3.perform_slide([3,4])
 b.display
-puts "white pos: #{p2.pos}, slide moves: #{p2.slide_moves}, jump moves: #{p2.jump_moves}"
+puts "white pos: #{whi1.pos}, slide moves: #{whi1.slide_moves}, jump moves: #{whi1.jump_moves}"
 
-p3.perform_jump([5,4])
+red4 = b[[1,4]]
+red4.perform_slide([2,5])
 b.display
+
+red3 = b[[0,3]]
+red3.perform_slide([1,4])
+b.display
+
+ # whi1.perform_jump([2,1])
+ # b.display
+# puts "white pos: #{whi1.pos}, slide moves: #{whi1.slide_moves}, jump moves: #{whi1.jump_moves}"
+#
+# whi1.perform_jump([0,3])
+# b.display
+
+whi1.perform_moves([2,1],[0,3])
+puts "original: "
+b.display
+
+
+
+
 # puts "red pos: #{p.pos}, slide moves: #{p.slide_moves}, jump moves: #{p.jump_moves}"
 # p2.perform_jump([2,1])
 # b.display
