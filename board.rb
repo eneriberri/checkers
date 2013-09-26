@@ -19,8 +19,8 @@ class Board
       8.times do |col|
         next if col.even? && color == :red
         next if col.odd? && color == :white
-
-        self.board[row][col] = Piece.new(self, color, [row, col])
+        pos = [row, col]
+        self[pos] = Piece.new(self, color, pos)
       end
     end
   end
@@ -31,8 +31,8 @@ class Board
     8.times do |col|
       next if col.odd? && color == :red
       next if col.even? && color == :white
-      #pos = [row, col]   >.<
-      self.board[row][col] = Piece.new(self, color, [row, col])
+      pos = [row, col]
+      self[pos] = Piece.new(self, color, pos)
     end
 
   end
@@ -87,6 +87,9 @@ puts "red p3 pos: #{p3.pos}, slide moves: #{p3.slide_moves}, jump moves: #{p3.ju
 p3.perform_slide([3,4])
 b.display
 puts "white pos: #{p2.pos}, slide moves: #{p2.slide_moves}, jump moves: #{p2.jump_moves}"
+
+p3.perform_jump([5,4])
+b.display
 # puts "red pos: #{p.pos}, slide moves: #{p.slide_moves}, jump moves: #{p.jump_moves}"
 # p2.perform_jump([2,1])
 # b.display

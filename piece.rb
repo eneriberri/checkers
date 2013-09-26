@@ -49,11 +49,29 @@ class Piece
   def perform_jump(target_pos)
     raise "InvalidMoveError" unless jump_moves.include? target_pos
 
+    cur_x, cur_y = target_pos
+    prior_x, prior_y = pos
     board[pos] = nil
+
+    #find pos of jumped piece
+    diff = [cur_x - prior_x, cur_y - prior_y]
+    jumped_loc_x, jumped_loc_y = case diff
+    when [-2, -2] #upper left diag
+      [-1, -1]
+    when [-2, 2] #upper right diag
+      [-1, 1]
+    when [2, -2] #lower left diag
+      [1, -1]
+    when [2, 2] #lower right diag
+      [1, 1]
+    end
+
+    jumped_loc = [prior_x + jumped_loc_x, prior_y + jumped_loc_y]
+    board[jumped_loc] = nil
+
     self.pos = target_pos
     board[pos] = self
 
-    #find pos of jumped piece,
     #set it's loc to nil, and nil the board at that loc
   end
 
