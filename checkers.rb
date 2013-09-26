@@ -9,16 +9,39 @@ class Board
   end
 
   def set_board
-    [:red, :white].each { fill_rows }
+    [:red, :white].each { |color| fill_rows(color); fill_midrows(color) }
   end
 
-  def fill_rows
-    i = color == :red ? 0 : 6
-    8.times do |j|
-      next if j.even? && color == :red
-      next if j.odd? && color == :white
+  def fill_rows(color)
+    i = color == :red ? [0,2] : [5, 7]
+    i.each do |row|
+      8.times do |col|
+        next if col.even? && color == :red
+        next if col.odd? && color == :white
 
-      self.board[i][j] = Piece.new(self.board, color, [i, j])
+        self.board[row][col] = Piece.new(self.board, color, [row, col])
+      end
+    end
+  end
+
+  def fill_midrows(color)
+    row = color == :red ? 1 : 6
+
+    8.times do |col|
+      next if col.odd? && color == :red
+      next if col.even? && color == :white
+
+      self.board[row][col] = Piece.new(self.board, color, [row, col])
+    end
+
+  end
+
+  def display
+    board.each do |row|
+      row.each do |piece|
+        p piece.to_s + " "
+      end
+      puts ""
     end
   end
 
@@ -46,7 +69,15 @@ class Piece
   def move
 
   end
+
+  def to_s
+    "#{color}"
+  end
 end
 
 class KingPiece < Piece
 end
+
+b = Board.new
+#b.display
+p b.board
