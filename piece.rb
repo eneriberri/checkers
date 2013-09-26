@@ -42,6 +42,7 @@ class Piece
     board[pos] = nil
     self.pos = target_pos
     board[pos] = self
+    promote(target_pos) if promote?
   end
 
   def perform_jump(target_pos)
@@ -57,6 +58,7 @@ class Piece
     board[jumped_loc] = nil
     self.pos = target_pos
     board[pos] = self
+    promote(target_pos) if promote?
   end
 
   def perform_moves!(*moves)
@@ -84,6 +86,15 @@ class Piece
     "\u2B24".colorize(color)
   end
 
+  def promote?
+    row = pos[0]
+    (color == :red && row == 7) || (color == :white && row == 0)
+  end
+
+  def promote(target_pos)
+    board[target_pos] = KingPiece.new(board, color, target_pos)
+    # self.board, self.pos, self.color = nil, nil, nil #remove original piece
+  end
 
   private
   def diag_dirs(diff)
@@ -107,24 +118,24 @@ class Piece
     end
   end
 
-  def promotion(pos)
-    row = pos[0]
-    return unless row == 0 || row == 7
 
-    king = KingPiece.new(board, self.pos, self.color)
-
-
-  end
 end
 
 
 class KingPiece < Piece
-  def move_dirs       #consolidate jump_moves and slide_moves
+  def initialize(board, color, pos)
+    @board, @color, @pos = board, color, pos
+    board.add_piece(self, pos)
+  end
+
+  def move_dirs
     [[1,-1], [1,1], [-1,-1], [-1,1]]
   end
 
+  #white pieces when king are yellow. red are magenta.
   def to_s
-    "\u2B24".colorize(:yellow)
+    display_color = color == :red ? :magenta : :yellow
+    "\u2B24".colorize(display_color)
   end
 
 

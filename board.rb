@@ -53,6 +53,17 @@ class Board
     puts "\n---------------------------------"
   end
 
+  def move(pos, target_pos)
+    begin
+      self[pos].perform_slide(target_pos)
+    rescue
+      self[pos].perform_jump(target_pos)
+    end
+
+    #self[pos].perform_jump(pos)
+
+  end
+
   def dup
     dup_board = Board.new(false)
     pieces.each { |piece| Piece.new(dup_board, piece.color, piece.pos) }
@@ -122,11 +133,17 @@ b.display
 #
 # whi1.perform_jump([0,3])
 # b.display
-
-p whi1.valid_move_seq?([2,1],[4,4])
+whi1.perform_moves!([2,1],[0,3]) #if whi1.valid_move_seq?([2,1],[0,3])
+#whi1.perform_jump([1,2])
 
 #whi1.perform_moves([2,1],[0,3])
 puts "original: "
+b.display
+
+king = b[[0,3]]
+p king.class
+king.perform_slide([1,2])
+
 b.display
 
 
