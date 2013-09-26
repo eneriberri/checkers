@@ -30,19 +30,22 @@ class Board
     8.times do |col|
       next if col.odd? && color == :red
       next if col.even? && color == :white
-
+      #pos = [row, col]   >.<
       self.board[row][col] = Piece.new(self.board, color, [row, col])
     end
 
   end
 
   def display
-    board.each do |row|
+    print " "; 8.times { |num| print "  #{num} "}; puts ""
+    board.each_with_index do |row, index|
+      print "#{index} "
       row.each do |piece|
-        p piece.to_s + " "
+        print piece.is_a?(Piece) ? piece.to_s + " " : " __ "
       end
       puts ""
     end
+    puts "\n------------------------------"
   end
 
   def [](pos)
@@ -52,7 +55,7 @@ class Board
 
   def []=(pos, val)
     row, col = pos
-    board[row][col] = val
+    self.board[row][col] = val
   end
 
 end
@@ -71,7 +74,7 @@ class Piece
   end
 
   def to_s
-    "#{color}"
+    "#{color[0..2].upcase}"
   end
 end
 
@@ -79,5 +82,5 @@ class KingPiece < Piece
 end
 
 b = Board.new
-#b.display
-p b.board
+b.display
+# p b.board
