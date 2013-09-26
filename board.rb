@@ -20,7 +20,7 @@ class Board
         next if col.even? && color == :red
         next if col.odd? && color == :white
 
-        self.board[row][col] = Piece.new(self.board, color, [row, col])
+        self.board[row][col] = Piece.new(self, color, [row, col])
       end
     end
   end
@@ -32,7 +32,7 @@ class Board
       next if col.odd? && color == :red
       next if col.even? && color == :white
       #pos = [row, col]   >.<
-      self.board[row][col] = Piece.new(self.board, color, [row, col])
+      self.board[row][col] = Piece.new(self, color, [row, col])
     end
 
   end
@@ -73,6 +73,21 @@ end
 b = Board.new
 b.display
 
-p = Piece.new(b, :red, [0,1])
-p p.jump_moves
-p p.slide_moves
+p = Piece.new(b, :red, [2,1])
+
+p.perform_slide([3,2])
+b.display
+
+p2 = Piece.new(b, :white, [5,4])
+p2.perform_slide([4,3])
+b.display
+
+p3 = b[[2,5]]
+puts "red p3 pos: #{p3.pos}, slide moves: #{p3.slide_moves}, jump moves: #{p3.jump_moves}"
+p3.perform_slide([3,4])
+b.display
+puts "white pos: #{p2.pos}, slide moves: #{p2.slide_moves}, jump moves: #{p2.jump_moves}"
+# puts "red pos: #{p.pos}, slide moves: #{p.slide_moves}, jump moves: #{p.jump_moves}"
+# p2.perform_jump([2,1])
+# b.display
+
