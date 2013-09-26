@@ -123,7 +123,7 @@ b.display
 # whi1.perform_jump([0,3])
 # b.display
 
-whi1.valid_move_seq?([2,1],[0,3])
+p whi1.valid_move_seq?([2,1],[4,4])
 
 #whi1.perform_moves([2,1],[0,3])
 puts "original: "

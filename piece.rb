@@ -37,7 +37,7 @@ class Piece
   end
 
   def perform_slide(target_pos)
-    raise "InvalidMoveError" unless slide_moves.include? target_pos
+    raise InvalidMoveError unless slide_moves.include? target_pos
 
     board[pos] = nil
     self.pos = target_pos
@@ -45,7 +45,7 @@ class Piece
   end
 
   def perform_jump(target_pos)
-    raise "InvalidMoveError" unless jump_moves.include? target_pos
+    raise InvalidMoveError unless jump_moves.include? target_pos
 
     cur_x, cur_y = target_pos
     prior_x, prior_y = pos
@@ -72,13 +72,15 @@ class Piece
   def valid_move_seq?(*moves)
     dup_board = board.dup
     dup_piece = Piece.new(dup_board, self.color, self.pos)
-    moves.each { |move| dup_piece.perform_moves!(move) }
+    begin
+      moves.each { |move| dup_piece.perform_moves!(move) }
+    rescue InvalidMoveError
+      return false
+    end
+    true
   end
 
-
-
   def to_s
-    "#{color[0..2].upcase}".colorize(color)
     "\u2B24".colorize(color)
   end
 
@@ -104,8 +106,30 @@ class Piece
       [[-1,-1], [-1,1]]
     end
   end
+
+  def promotion(pos)
+    row = pos[0]
+    return unless row == 0 || row == 7
+
+    king = KingPiece.new(board, self.pos, self.color)
+
+
+  end
 end
 
+
 class KingPiece < Piece
+  def move_dirs       #consolidate jump_moves and slide_moves
+    [[1,-1], [1,1], [-1,-1], [-1,1]]
+  end
+
+  def to_s
+    "\u2B24".colorize(:yellow)
+  end
+
+
+end
+
+class InvalidMoveError < ArgumentError
 end
 
