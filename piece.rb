@@ -60,13 +60,19 @@ class Piece
   end
 
   def perform_moves!(*moves)
-    moves.each { |move| perform_jump(move); board.display }
+    moves.each { |move| self.perform_jump(move); puts "copy: "; self.board.display }
   end
 
-  def perform_moves(*moves)
+  # def perform_moves(*moves)
+  #   dup_board = board.dup
+  #   dup_piece = Piece.new(dup_board, self.color, self.pos)
+  #   moves.each { |move| dup_piece.perform_jump(move); dup_board.display }
+  # end
+
+  def valid_move_seq?(*moves)
     dup_board = board.dup
     dup_piece = Piece.new(dup_board, self.color, self.pos)
-    moves.each { |move| dup_piece.perform_jump(move); dup_board.display }
+    moves.each { |move| dup_piece.perform_moves!(move) }
   end
 
 
@@ -74,7 +80,6 @@ class Piece
   def to_s
     "#{color[0..2].upcase}".colorize(color)
     "\u2B24".colorize(color)
-    #"\u2603".colorize(color)
   end
 
 

@@ -4,12 +4,13 @@ require_relative 'piece'
 class Board
   attr_accessor :board
 
-  def initialize
+  def initialize(initial_fill = true)
     @board = Array.new(8) { Array.new(8) }
-    set_board
+    set_board(initial_fill)
   end
 
-  def set_board
+  def set_board(initial_fill)
+    return unless initial_fill
     [:red, :white].each { |color| fill_rows(color); fill_midrows(color) }
   end
 
@@ -43,7 +44,7 @@ class Board
       print "#{index} ".colorize(:magenta)
       col = 0
       row.each do |piece|
-        color = (index.even? && col.odd?) || (index.odd? && col.even?) ? :black : :cyan
+        color = (index.even? && col.odd?) || (index.odd? && col.even?) ? :black : :light_blue
         print piece.is_a?(Piece) ? " #{piece.to_s.colorize(:background => color)} " : "   ".colorize(:background => color)
         col += 1
       end
@@ -53,7 +54,7 @@ class Board
   end
 
   def dup
-    dup_board = Board.new
+    dup_board = Board.new(false)
     pieces.each { |piece| Piece.new(dup_board, piece.color, piece.pos) }
     dup_board
   end
@@ -122,7 +123,9 @@ b.display
 # whi1.perform_jump([0,3])
 # b.display
 
-whi1.perform_moves([2,1],[0,3])
+whi1.valid_move_seq?([2,1],[0,3])
+
+#whi1.perform_moves([2,1],[0,3])
 puts "original: "
 b.display
 
