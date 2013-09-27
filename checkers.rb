@@ -51,27 +51,24 @@ class Game
     if b.must_jump?(new_pos)
       puts "You must jump."
       b.display
-      jump_turn(new_pos, red)
+      jump_again(new_pos, red)
     end
   end
 
-  def jump_turn(new_pos, red)
+  def jump_again(new_pos, red)
     begin
       player = red ? "Red" : "White"
-      puts "#{player}, select piece: (e.g. 1,0)"
-      pos = gets.chomp.split(",").map(&:to_i)
-
-      puts "#{player}, select destination: "
+      puts "#{player}, select destination of piece at #{new_pos}"
       target_pos = gets.chomp.split(",").map(&:to_i)
-      jump = b.move(pos, target_pos)
+
+      target_pos = gets.chomp.split(",").map(&:to_i)
+      jump = b.jump(new_pos, target_pos)
       continue_jump(target_pos, red) if jump
     rescue
       puts "Invalid move. Try again."
       retry
     end
   end
-
-
 
   def game_over?
     b.board.flatten.compact.empty?

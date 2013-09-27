@@ -110,14 +110,13 @@ class Piece
     end
   end
 
-  def move_dirs       #consolidate jump_moves and slide_moves
+  def move_dirs
     if color == :red
       [[1,-1], [1,1]]
     else
       [[-1,-1], [-1,1]]
     end
   end
-
 
 end
 
@@ -137,7 +136,6 @@ class KingPiece < Piece
     display_color = color == :red ? :magenta : :yellow
     "\u2B24".colorize(display_color)
   end
-
 
 end
 

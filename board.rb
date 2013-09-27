@@ -62,7 +62,11 @@ class Board
       end
       return true #return true if jump move
     end
+  end
 
+  def jump(pos, target_pos)
+    self[pos].perform_moves!(target_pos)
+    must_jump?(target_pos)
   end
 
   def must_jump?(pos)
