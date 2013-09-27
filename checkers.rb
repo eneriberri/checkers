@@ -42,12 +42,9 @@ class Game
       retry
     end
 
-
   end
 
   def continue_jump(new_pos, red)
-    # "puts inside continue_jump method"
-    # p "#{new_pos} :new_pos"
     if b.must_jump?(new_pos)
       puts "You must jump."
       b.display
@@ -71,7 +68,7 @@ class Game
   end
 
   def game_over?
-    b.board.flatten.compact.empty?
+    b.more_moves?
   end
 end
 

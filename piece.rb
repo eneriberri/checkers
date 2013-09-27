@@ -93,7 +93,7 @@ class Piece
 
   def promote(target_pos)
     board[target_pos] = KingPiece.new(board, color, target_pos)
-    # self.board, self.pos, self.color = nil, nil, nil #remove original piece
+    #self.board, self.pos, self.color = nil, nil, nil #remove original piece
   end
 
   private
