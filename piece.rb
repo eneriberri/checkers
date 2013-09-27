@@ -62,7 +62,7 @@ class Piece
   end
 
   def perform_moves!(*moves)
-    moves.each { |move| self.perform_jump(move); puts "copy: "; self.board.display }
+    moves.each { |move| self.perform_jump(move) } #; self.board.display }
   end
 
   # def perform_moves(*moves)
